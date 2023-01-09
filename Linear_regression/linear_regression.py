@@ -6,32 +6,36 @@ class LinearRegression:
         self.learning_rate = learning_rate
         self.n_epochs = n_epochs
         self.weights = None
-        self.bias = None
 
     def fit(self, X, y):
+        X_b = np.array([[1]]*X.shape[0])
+        X = np.concatenate((X_b, X), axis=1)
         n_samples, n_features = X.shape
 
         # initialize weights and bias with zeros
-        self.weights = np.zeros(n_features)
-        self.bias = 0
+        self.weights = np.random.randn(n_features,1)
+
 
         # gradient descent
         for epoch in range(self.n_epochs):
-            # calculate predictions
-            y_pred = np.dot(X, self.weights) + self.bias
 
-            # calculate the gradient of the mean squared error loss function with repect to weights and bias
-            dw = (1/n_samples) * np.dot(X.T, (y_pred - y))
-            db = (1/n_samples) * np.sum(y_pred-y)
+            # calculate the gradient
+            gradient = (2/n_samples) * X.T @(X @ self.weights - y)
 
             # update the weights and bias
-            self.weights -= self.learning_rate * dw
-            self.bias -= self.learning_rate * db
+            self.weights -= self.learning_rate * gradient
 
     def predict(self, X):
         y_pred = np.dot(X, self.weights) + self.bias
         return y_pred
     
     def get_weights_bias(self):
-        return (self.weights, self.bias)
+        equation = ''
+        for i in range(self.weights.shape[0]):
+            if i == 0:
+                equation += str(self.weights[i][0])
+            if i != 0:
+                equation += ' + '
+                equation +=  str(self.weights[i][0]) + '*x_' + str(i)
+        return equation
 

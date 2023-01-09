@@ -16,8 +16,9 @@ class StochasticGradientDescent:
         ones = np.ones(shape=(X.shape[0],1))
         X = np.concatenate((ones, X), axis=1)
         n_samples, n_features = X.shape
-        #initialize weights and bias with zeros
-        self.weights = np.zeros(n_features)
+
+        # initialize weights
+        self.weights = np.random.randn(n_features,1)
 
         # gradient descent
         for epoch in range(self.n_epochs):
@@ -43,4 +44,11 @@ class StochasticGradientDescent:
         return y_pred
 
     def get_weights_bias(self):
-        return (self.weights[1:], self.weights[0])
+        equation = ''
+        for i in range(self.weights.shape[0]):
+            if i == 0:
+                equation += str(self.weights[i][0])
+            if i != 0:
+                equation += ' + '
+                equation +=  str(self.weights[i][0]) + '*x_' + str(i)
+        return equation
