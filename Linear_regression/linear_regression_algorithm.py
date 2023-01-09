@@ -19,7 +19,7 @@ class LinearRegression:
         X = np.concatenate((X_b, X), axis=1)
         n_samples, n_features = X.shape
 
-        # initialize weights and bias with zeros
+        # randomly initialize weights
         self.weights = np.random.randn(n_features,1)
 
 
